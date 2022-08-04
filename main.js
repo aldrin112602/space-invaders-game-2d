@@ -24,7 +24,7 @@ function documentLoaded() {
       }
       draw() {
         const image = new Image()
-        image.src = './images/player.png'
+        image.src = './player.png'
         ctx.drawImage(image, this.x, this.y, this.width, this.height)
       }
     }
@@ -126,7 +126,7 @@ function documentLoaded() {
       }
       draw() {
        const enemySprite = new Image()
-       enemySprite.src = './images/enemy1.png'
+       enemySprite.src = './enemy1.png'
        ctx.drawImage(enemySprite, this.x, this.y, this.width, this.height)
       }
     }
@@ -140,7 +140,7 @@ function documentLoaded() {
       }
       if(!gameLive && !isWin) {
         let gOverBg = new Image()
-        gOverBg.src = './images/gOver.png'
+        gOverBg.src = './gOver.png'
           ctx.drawImage(gOverBg, 0, 0, game_width, game_height)
           ctx.fillStyle = 'white'
           ctx.font = '30px Georgia'
@@ -152,7 +152,7 @@ function documentLoaded() {
       if(gameLive && enemyLive <= 0) {
         isWin = true
         let winBg = new Image()
-        winBg.src = './images/win.jpeg'
+        winBg.src = './win.jpeg'
           ctx.drawImage(winBg, 0, 0, game_width, game_height)
           ctx.fillStyle = 'white'
           ctx.font = '30px Georgia'
@@ -220,7 +220,7 @@ function documentLoaded() {
       }
       draw() {
         const circle = new Image()
-        circle.src = './images/circle.png'
+        circle.src = './circle.png'
         ctx.drawImage(circle,this.x, this.y, this.width, this.height)
       }
     }
@@ -403,7 +403,7 @@ function documentLoaded() {
     function animate() {
      ctx.clearRect(0, 0, game_width, game_height)
      const bg = new Image()
-      bg.src = './images/bg.jpeg'
+      bg.src = './bg.jpeg'
       ctx.drawImage(bg, 0, 0, game_width, game_height)
       handleObstacles()
       player.draw()
