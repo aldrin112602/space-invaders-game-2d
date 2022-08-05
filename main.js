@@ -3,10 +3,77 @@ function documentLoaded() {
     let game_width = canvas.width = innerWidth
     let game_height = canvas.height = innerHeight
     const ctx = canvas.getContext('2d')
+   
+    let level = {
+      x: 20,
+      y: 55,
+      level: 1,
+      draw: function() {
+       ctx.fillStyle = 'white' 
+       ctx.font = '20px Georga'
+       ctx.fillText('Level: ' + this.level, this.x, this.y, 100)
+      },
+      update: function() {
+        this.draw()
+      }
+    }
+    
     const mouse_position = {
       x: game_width / 2 ,
       y: game_height - 100
     }
+
+    
+  const particlesArray = []
+  let hue = 0
+  const mouse = {
+       x: undefined, 
+       y: undefined
+  }
+  ctx.fillStyle = '000'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  class Particle {
+    constructor() {
+      this.x = mouse.x
+      this.y = mouse.y
+      this.speedX = Math.random() * 3 - 1.5
+      this.speedY = Math.random() * 3 - 1.5
+      this.size = Math.random() * 10
+      this.color = `hsl(${hue}, 100%, 50%)`
+    }
+    update() {
+      this.x += this.speedX
+      this.y += this.speedY
+      if(this.size > 0.2) this.size -= 0.1 
+    }
+    draw() {
+      ctx.beginPath()
+      ctx.fillStyle = this.color
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.closePath()
+    }
+  }
+
+  function addParticles() {
+    for (let i = 0; i < 2; i++) {
+      particlesArray.push(new Particle())
+    }
+  }
+  
+ function handleParticles() {
+   for(let i = 0; i < particlesArray.length; i++) {
+     particlesArray[i].draw()
+     particlesArray[i].update()
+     
+     
+     if(particlesArray[i].size <= 0.3) {
+       particlesArray.splice(i, 1)
+       i--
+     }
+   }
+ }
+
     const enemy_position = {
       x: Math.floor(Math.random() * (game_width - 170)),
       y: 20
@@ -94,7 +161,6 @@ function documentLoaded() {
       }
     }
     
-    //Enemy Object constructor
     class Enemy {
       constructor() {
         this.width = 170
@@ -123,6 +189,9 @@ function documentLoaded() {
        }
        enemy_position.x = this.x
        enemy_position.y = this.y
+       mouse.x = this.x + this.width / 2
+       mouse.y = this.y + 30
+       addParticles()
       }
       draw() {
        const enemySprite = new Image()
@@ -160,7 +229,7 @@ function documentLoaded() {
       }
     }
     
-    //Enemy life var object constructor
+
     class EnemyLifeBar {
       constructor() {
         this.x = enemy_position.x + 50
@@ -182,8 +251,6 @@ function documentLoaded() {
         ctx.fillRect(this.x, this.y, this.width, this.height)
       }
     }
-    
-    //Player life bar
     let lifeBar = {
       x: 20,
       y: 20,
@@ -387,9 +454,14 @@ function documentLoaded() {
     
     function animate() {
      ctx.clearRect(0, 0, game_width, game_height)
+    
      const bg = new Image()
       bg.src = './bg.jpeg'
       ctx.drawImage(bg, 0, 0, game_width, game_height)
+      handleParticles()
+      hue += 1
+      if(hue > 360) hue = 0
+      level.update()
       handleObstacles()
       player.draw()
       player.update()
