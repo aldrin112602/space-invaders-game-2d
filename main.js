@@ -288,52 +288,37 @@ function documentLoaded() {
     }
     
     function handleObstacles() {
-     for(let i = 0; i < obstacles_left.length; i++) {
-       obstacles_left[i].draw()
-       obstacles_left[i].update()
-       
-       
-       if(collision_detection(obstacles_left[i], enemy)) {
-         obstacles_left[i].color = 'red'
-         if (enemyLive > 0) {
-           enemyLive -= 0.09
-         }
-         setTimeout(() => {
-           obstacles_left.splice(obstacles_left[i], 1)
-         }, 100)
-       }
-       
-     }
+      [...obstacles_left].forEach((obj,i) => {
+        obj.draw()
+        obj.update()
+        if(collision_detection(obj, enemy)) {
+          if(enemyLive > 0) enemyLive -= 0.09
+          obj.color = 'red'
+          obstacles_left.splice(obstacles_left.indexOf(i), 1)
+        }
+      });
+      
+      [...obstacles_right].forEach((obj,i) => {
+        obj.draw()
+        obj.update()
+        if(collision_detection(obj, enemy)) {
+          if(enemyLive > 0) enemyLive -= 0.09
+          obj.color = 'red'
+          obstacles_right.splice(obstacles_right.indexOf(i), 1)
+        }
+      });
+      
+      [...obstacles_center].forEach((obj, i) => {
+        obj.draw()
+        obj.update()
+        if (collision_detection(obj, enemy)) {
+          if (enemyLive > 0) enemyLive -= 0.09
+          obj.color = 'red'
+          obstacles_center.splice(obstacles_center.indexOf(i), 1)
+        }
+      })
+
      
-     for(let i = 0; i < obstacles_right.length; i++) {
-       obstacles_right[i].update()
-       obstacles_right[i].draw()
-       if(collision_detection(obstacles_right[i], enemy)) {
-         obstacles_right[i].color = 'red'
-         if(enemyLive > 0) {
-           enemyLive -= 0.09
-         }
-         setTimeout(() => {
-           obstacles_right.splice(obstacles_right[i], 1)
-         }, 100)
-       }
-     }
-     
-     for (let i = 0; i < obstacles_center.length; i++) {
-       obstacles_center[i].update()
-       obstacles_center[i].draw()
-       if(collision_detection(obstacles_center[i], enemy)) {
-         if(enemyLive > 0) {
-           enemyLive -= 0.09
-         }
-         obstacles_center[i].color = 'red'
-         setTimeout(() => {
-           obstacles_center.splice(obstacles_center[i], 1)
-         }, 100)
-        
-       }
-       
-     }
      
      for(let i = 0; i < enemy_obstacle.length; i++) {
        enemy_obstacle[i].update()
@@ -419,9 +404,6 @@ function documentLoaded() {
     canvas.addEventListener('touchmove', function(ev) {
       mouse_position.x = Math.floor(ev.touches[0].clientX)
       mouse_position.y = Math.floor(ev.touches[0].clientY)
-      if(mouse_position.y < 150) {
-        mouse_position.y = 150
-      }
     })
     canvas.addEventListener('click', function() {
       if(!gameLive || isWin) {
