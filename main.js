@@ -477,6 +477,10 @@ function documentLoaded() {
       mouse_position.x = Math.floor(ev.touches[0].clientX)
       mouse_position.y = Math.floor(ev.touches[0].clientY)
     })
+    canvas.addEventListener('mousemove', function(ev) {
+      mouse_position.x = Math.floor(ev.touches[0].clientX)
+      mouse_position.y = Math.floor(ev.touches[0].clientY)
+    })
     canvas.addEventListener('click', function() {
       if(!gameLive || isWin) {
         location.reload()
